@@ -438,7 +438,7 @@ const App = () => {
         {/* Profile Picture */}
         <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)] mb-6 relative group bg-slate-800">
           <img
-            src="/IMG_6192.jpg"
+            src="/profile.jpg"
             alt="Andrés Ciordia"
             className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
             onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200"; }}
@@ -907,8 +907,8 @@ const App = () => {
               {chatMessages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-3.5 rounded-2xl text-sm shadow-md font-light ${msg.role === 'user'
-                      ? 'bg-blue-600/80 text-white rounded-tr-none border border-blue-500/30 backdrop-blur-sm'
-                      : 'bg-white/5 text-slate-200 border border-white/10 rounded-tl-none backdrop-blur-sm'
+                    ? 'bg-blue-600/80 text-white rounded-tr-none border border-blue-500/30 backdrop-blur-sm'
+                    : 'bg-white/5 text-slate-200 border border-white/10 rounded-tl-none backdrop-blur-sm'
                     }`}>
                     {msg.text}
                   </div>
@@ -948,8 +948,8 @@ const App = () => {
         <button
           onClick={() => setIsChatOpen(!isChatOpen)}
           className={`p-4 rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] transition-all duration-300 transform hover:scale-105 flex items-center gap-2 border ${isChatOpen
-              ? 'bg-slate-800/80 text-white border-white/10 backdrop-blur-md'
-              : 'bg-blue-600/90 text-white border-blue-400/30 backdrop-blur-md hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]'
+            ? 'bg-slate-800/80 text-white border-white/10 backdrop-blur-md'
+            : 'bg-blue-600/90 text-white border-blue-400/30 backdrop-blur-md hover:bg-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)]'
             }`}
         >
           {isChatOpen ? <X className="w-6 h-6" /> : (
