@@ -6,7 +6,7 @@ import {
   Users, FileText, Lightbulb, Target, BriefcaseBusiness, TrendingUp, ClipboardCheck, Terminal
 } from 'lucide-react';
 
-const apiKey = ""; // La clave se proporciona en el entorno de ejecución
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ""; // La clave se proporciona en el entorno de ejecución (ej. Vercel)
 
 const App = () => {
   const [selectedProject, setSelectedProject] = useState(null);
