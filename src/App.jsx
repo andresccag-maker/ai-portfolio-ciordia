@@ -14,7 +14,7 @@ const App = () => {
   // Chat States
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState([
-    { role: 'assistant', text: '¡Hola! Soy el asistente de IA de Andrés. ¿En qué proyecto o habilidad te gustaría profundizar hoy?' }
+    { role: 'assistant', text: "Hi! I'm Andrés's AI assistant. My database is connected. How can I help you today?" }
   ]);
   const [userInput, setUserInput] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
@@ -50,7 +50,7 @@ const App = () => {
 
   // NEW: Autonomous Agent Terminal States
   const [agentLogs, setAgentLogs] = useState([]);
-  const [isAgentActive, setIsAgentActive] = useState(true);
+  const [isAgentActive] = useState(true);
 
   const chatEndRef = useRef(null);
   // Reemplazamos logsEndRef por un ref para el contenedor entero
@@ -61,15 +61,15 @@ const App = () => {
     if (!isAgentActive) return;
 
     const simulateLogs = [
-      { text: "[SYSTEM] Inicializando Agente Autónomo de Búsqueda de Empleo (v2.1)...", delay: 1000, color: "text-slate-400" },
-      { text: "[CRON] Ejecutando escaneo en Dublín Tech Hub...", delay: 2500, color: "text-blue-400" },
-      { text: "[SCRAPER] Extrayendo 15 vacantes recientes de 'AI Solutions Architect'...", delay: 4500, color: "text-slate-300" },
-      { text: "[LLM] Evaluando vacante en 'FinTech Scaleup' > Análisis de Fit: 89% (Supabase, n8n, Python detectados).", delay: 7000, color: "text-emerald-400" },
-      { text: "[AGENT] Decisión: PROCEDER A APLICAR.", delay: 8500, color: "text-white font-bold" },
-      { text: "[GENERATOR] Creando Cover Letter dinámica usando modelo Gemini 2.5 Flash...", delay: 10500, color: "text-amber-400" },
-      { text: "[PLAYWRIGHT] Navegando al ATS (Greenhouse)... Inyectando datos del CV...", delay: 13000, color: "text-slate-300" },
-      { text: "[SUCCESS] Aplicación completada con éxito. Guardando registro en Supabase DB.", delay: 16000, color: "text-emerald-500 font-bold" },
-      { text: "[SYSTEM] Modo de espera (Sleep) activado. Próximo escaneo en 4 horas.", delay: 18000, color: "text-slate-500" }
+      { text: "[SYSTEM] Initializing Autonomous Job Hunter Agent (v2.1)...", delay: 1000, color: "text-slate-400" },
+      { text: "[CRON] Scanning Dublin Tech Hub...", delay: 2500, color: "text-blue-400" },
+      { text: "[SCRAPER] Extracting 15 recent 'AI Solutions Architect' vacancies...", delay: 4500, color: "text-slate-300" },
+      { text: "[LLM] Evaluating vacancy at 'FinTech Scaleup' > Fit Analysis: 89% (Supabase, n8n, Python detected).", delay: 7000, color: "text-emerald-400" },
+      { text: "[AGENT] Decision: PROCEED TO APPLY.", delay: 8500, color: "text-white font-bold" },
+      { text: "[GENERATOR] Crafting dynamic Cover Letter using Gemini 2.5 Flash model...", delay: 10500, color: "text-amber-400" },
+      { text: "[PLAYWRIGHT] Navigating to ATS (Greenhouse)... Injecting Resume data...", delay: 13000, color: "text-slate-300" },
+      { text: "[SUCCESS] Application completed successfully. Saving record to Supabase DB.", delay: 16000, color: "text-emerald-500 font-bold" },
+      { text: "[SYSTEM] Sleep mode activated. Next scan in 4 hours.", delay: 18000, color: "text-slate-500" }
     ];
 
     let timeouts = [];
@@ -213,15 +213,15 @@ const App = () => {
     setUserInput('');
     setIsAiLoading(true);
 
-    const portfolioContext = `Eres el asistente de IA de Andrés Ciordia, un Especialista en Implementación de IA en Dublín. 
-    Sus proyectos son: ${projects.map(p => `${p.title}: ${p.shortDesc}`).join('. ')}. 
-    Sus fuertes son n8n, Supabase, PostgreSQL y Gobernanza de IA. Responde siempre de forma profesional y entusiasta para ayudar a los reclutadores.`;
+    const portfolioContext = `You are the AI Assistant for Andrés Ciordia, an AI Implementation Specialist based in Dublin. 
+    His projects are: ${projects.map(p => `${p.title}: ${p.shortDesc}`).join('. ')}. 
+    His core skills are n8n, Supabase, PostgreSQL, and AI Governance. Always respond in a professional and enthusiastic manner to help recruiters. Always respond in English.`;
 
     try {
       const response = await callGemini(userInput, portfolioContext);
       setChatMessages([...newMessages, { role: 'assistant', text: response }]);
-    } catch (err) {
-      setChatMessages([...newMessages, { role: 'assistant', text: "Lo siento, tuve un problema conectando con mi cerebro de IA ✨. Por favor, reintenta." }]);
+    } catch {
+      setChatMessages([...newMessages, { role: 'assistant', text: "Sorry, I had an issue connecting with my AI brain ✨. Please try again." }]);
     } finally {
       setIsAiLoading(false);
     }
@@ -238,14 +238,14 @@ const App = () => {
 
   const generateProjectInsight = async (project) => {
     setIsAiLoading(true);
-    const prompt = `Analiza este proyecto de Andrés Ciordia: ${project.title}. Descripción: ${project.fullDesc}. 
-    Sugiere 3 formas innovadoras de escalarlo o añadirle más valor usando tecnologías de IA avanzadas. Sé conciso y técnico.`;
+    const prompt = `Analyze this project by Andrés Ciordia: ${project.title}. Description: ${project.fullDesc}. 
+    Suggest 3 innovative ways to scale it or add more value using advanced AI technologies. Be concise and technical.`;
 
     try {
-      const result = await callGemini(prompt, "Eres un consultor senior de arquitectura de IA.");
+      const result = await callGemini(prompt, "You are a senior AI architecture consultant. Always respond in English.");
       setAiInsights(result);
-    } catch (err) {
-      setAiInsights("No se pudo generar el análisis en este momento ✨.");
+    } catch {
+      setAiInsights("Could not generate the analysis right now ✨.");
     } finally {
       setIsAiLoading(false);
     }
@@ -253,14 +253,14 @@ const App = () => {
 
   const explainProjectToHR = async (project) => {
     setIsHrLoading(true);
-    const prompt = `Analiza este proyecto técnico de Andrés Ciordia: ${project.title}. Descripción: ${project.fullDesc} y Stack: ${project.tools.join(', ')}. 
-    Explica qué valor aporta este proyecto a una empresa en un lenguaje súper sencillo y de negocios, ideal para un reclutador de Recursos Humanos que no sabe de código. Destaca el ahorro de tiempo, la eficiencia y el impacto. Usa 2 párrafos persuasivos.`;
+    const prompt = `Analyze this technical project by Andrés Ciordia: ${project.title}. Description: ${project.fullDesc} and Stack: ${project.tools.join(', ')}. 
+    Explain what value this project brings to a company in extremely simple, business-friendly language, ideal for an HR recruiter with no coding background. Highlight time saved, efficiency, and impact. Use 2 persuasive paragraphs.`;
 
     try {
-      const result = await callGemini(prompt, "Eres un traductor experto entre perfiles técnicos de IT y reclutadores de Recursos Humanos.");
+      const result = await callGemini(prompt, "You are an expert translator between technical IT profiles and HR recruiters. Always respond in English.");
       setHrExplanation(result);
-    } catch (err) {
-      setHrExplanation("No se pudo generar la explicación en este momento ✨.");
+    } catch {
+      setHrExplanation("Could not generate the explanation right now ✨.");
     } finally {
       setIsHrLoading(false);
     }
@@ -269,16 +269,16 @@ const App = () => {
   const adaptToIndustry = async (project) => {
     if (!visitorIndustry.trim()) return;
     setIsAdapting(true);
-    const prompt = `Un visitante de la web trabaja en el sector: "${visitorIndustry}".
-    Andrés ha creado el proyecto: "${project.title}" (Descripción: ${project.fullDesc}).
-    Explica cómo la arquitectura y tecnología subyacente de este proyecto podría adaptarse para automatizar o mejorar procesos específicos en la industria del visitante (${visitorIndustry}). 
-    Escribe 2 párrafos persuasivos que demuestren que Andrés puede ayudar a su negocio.`;
+    const prompt = `A website visitor works in the industry: "${visitorIndustry}".
+    Andrés has created the project: "${project.title}" (Description: ${project.fullDesc}).
+    Explain how the underlying architecture and technology of this project could be adapted to automate or improve specific processes in the visitor's industry (${visitorIndustry}). 
+    Write 2 persuasive paragraphs demonstrating that Andrés can help their business.`;
 
     try {
-      const result = await callGemini(prompt, "Eres un consultor de ventas B2B experto en IA.");
+      const result = await callGemini(prompt, "You are a B2B sales consultant specialized in AI. Always respond in English.");
       setIndustryAdaptation(result);
-    } catch (err) {
-      setIndustryAdaptation("No se pudo generar el caso de uso. Por favor, revisa la conexión ✨.");
+    } catch {
+      setIndustryAdaptation("Could not generate the use case. Please check the connection ✨.");
     } finally {
       setIsAdapting(false);
     }
@@ -289,20 +289,20 @@ const App = () => {
     setIsAnalyzing(true);
     clearCareerOutputs();
 
-    const context = `Eres un asistente experto en reclutamiento IT y headhunting especializado en perfiles de Inteligencia Artificial. 
-    El candidato es Andrés Ciordia: AI Solutions Architect & Implementation Specialist radicado en Dublín.
-    Habilidades clave: n8n, Supabase, PostgreSQL, Gobernanza de IA (Responsible AI), Python, Vercel, Arquitectura SaaS.
-    Proyectos: Roomflow, EasyFitness Coach, AI Cell Analyzer, Meteonieve, EPS Gradebook.`;
+    const context = `You are an expert IT recruiter and headhunter specializing in Artificial Intelligence profiles. 
+    The candidate is Andrés Ciordia: AI Solutions Architect & Implementation Specialist based in Dublin.
+    Key skills: n8n, Supabase, PostgreSQL, AI Governance (Responsible AI), Python, Vercel, SaaS Architecture.
+    Projects: Roomflow, EasyFitness Coach, AI Cell Analyzer, Meteonieve, EPS Gradebook. Always respond in English.`;
 
-    const prompt = `Analiza detalladamente esta oferta de trabajo: "${jobDescription}"
-    Escribe un "Pitch" persuasivo de máximo 3 párrafos explicando por qué el perfil de Andrés encaja a la perfección con este puesto. 
-    Menciona explícitamente cuáles de sus proyectos demuestran que tiene la experiencia necesaria.`;
+    const prompt = `Analyze this job offer in detail: "${jobDescription}"
+    Write a persuasive "Pitch" of exactly 3 paragraphs explaining why Andrés's profile is a perfect fit for this role. 
+    Explicitly mention which of his projects demonstrate the required experience.`;
 
     try {
       const result = await callGemini(prompt, context);
       setFitAnalysis(result);
-    } catch (err) {
-      setFitAnalysis("Ocurrió un error al analizar la oferta. ✨");
+    } catch {
+      setFitAnalysis("An error occurred while analyzing the job offer. ✨");
     } finally {
       setIsAnalyzing(false);
     }
@@ -313,17 +313,17 @@ const App = () => {
     setIsGeneratingLetter(true);
     clearCareerOutputs();
 
-    const context = `Eres Andrés Ciordia, AI Solutions Architect & Implementation Specialist radicado en Dublín. Usas un tono profesional, seguro, moderno y proactivo. Te especializas en arquitecturas end-to-end, automatización con n8n, Supabase y modelos LLM.`;
+    const context = `You are Andrés Ciordia, AI Solutions Architect & Implementation Specialist based in Dublin. You use a professional, confident, modern, and proactive tone. You specialize in end-to-end architectures, automation with n8n, Supabase, and LLMs. Always respond in English.`;
 
-    const prompt = `Basándote en esta oferta de trabajo: "${jobDescription}".
-    Redacta un correo electrónico (Cover Letter) que enviarías al Hiring Manager postulando a esta posición. 
-    Firma como "Andrés Ciordia, AI Solutions Architect".`;
+    const prompt = `Based on this job offer: "${jobDescription}".
+    Write an email (Cover Letter) that you would send to the Hiring Manager applying for this position. 
+    Sign as "Andrés Ciordia, AI Solutions Architect".`;
 
     try {
       const result = await callGemini(prompt, context);
       setCoverLetter(result);
-    } catch (err) {
-      setCoverLetter("No se pudo generar la carta de presentación. ✨");
+    } catch {
+      setCoverLetter("Could not generate the cover letter. ✨");
     } finally {
       setIsGeneratingLetter(false);
     }
@@ -334,19 +334,19 @@ const App = () => {
     setIsGeneratingPrep(true);
     clearCareerOutputs();
 
-    const context = `Eres un Senior Engineering Manager preparando a Andrés Ciordia para una entrevista técnica. 
-    Andrés es experto en n8n, Supabase, PostgreSQL, Python, IA Generativa y Vercel. 
-    Proyectos: Roomflow (SaaS), EasyFitness Coach (IA Generativa), AI Cell Analyzer (Computer Vision Python/Railway), Meteonieve (Voice Cloning TTS), EPS Gradebook (Agentes de IA en n8n).`;
+    const context = `You are a Senior Engineering Manager preparing Andrés Ciordia for a technical interview. 
+    Andrés is an expert in n8n, Supabase, PostgreSQL, Python, Generative AI, and Vercel. 
+    Projects: Roomflow (SaaS), EasyFitness Coach (Generative AI), AI Cell Analyzer (Computer Vision Python/Railway), Meteonieve (Voice Cloning TTS), EPS Gradebook (AI Agents in n8n). Always respond in English.`;
 
-    const prompt = `Basado en esta oferta de trabajo: "${jobDescription}".
-    Genera las 3 preguntas de entrevista técnica o arquitectónica más probables y difíciles que le harían a Andrés.
-    Para cada pregunta, proporciona una sugerencia de respuesta breve de cómo Andrés debería contestar usando la técnica STAR y haciendo referencia a uno de sus proyectos específicos.`;
+    const prompt = `Based on this job offer: "${jobDescription}".
+    Generate the 3 most likely and difficult technical or architectural interview questions they would ask Andrés.
+    For each question, provide a brief suggested answer on how Andrés should reply using the STAR method and referencing one of his specific projects.`;
 
     try {
       const result = await callGemini(prompt, context);
       setInterviewPrep(result);
-    } catch (err) {
-      setInterviewPrep("No se pudo generar la preparación. ✨");
+    } catch {
+      setInterviewPrep("Could not generate the interview prep. ✨");
     } finally {
       setIsGeneratingPrep(false);
     }
@@ -357,17 +357,17 @@ const App = () => {
     setIsGeneratingROI(true);
     clearCareerOutputs();
 
-    const context = `Eres un Director de Tecnología (CTO) y experto en eficiencia financiera y operativa. Conoces el valor de la automatización Low-Code frente al desarrollo tradicional.`;
+    const context = `You are a Chief Technology Officer (CTO) and expert in operational and financial efficiency. You know the value of Low-Code automation versus traditional development. Always respond in English.`;
 
-    const prompt = `Analiza la siguiente vacante o requerimiento de proyecto: "${jobDescription}".
-    Escribe un argumento financiero (ROI Analysis) de 3 párrafos explicando cuánto tiempo y dinero se ahorraría la empresa al contratar a Andrés Ciordia (AI Architect especialista en Low-Code, n8n, Supabase y LLMs) en lugar de contratar a un equipo de desarrollo tradicional de 3 personas (Frontend, Backend, DevOps).
-    Usa estimaciones porcentuales realistas de ahorro de "Time-to-Market" y reducción de costes operativos. Sé muy persuasivo y profesional.`;
+    const prompt = `Analyze the following vacancy or project requirement: "${jobDescription}".
+    Write a financial argument (ROI Analysis) of exactly 3 paragraphs explaining how much time and money the company would save by hiring Andrés Ciordia (AI Architect specializing in Low-Code, n8n, Supabase, and LLMs) instead of hiring a traditional development team of 3 people (Frontend, Backend, DevOps).
+    Use realistic percentage estimates for "Time-to-Market" savings and operational cost reduction. Be highly persuasive and professional.`;
 
     try {
       const result = await callGemini(prompt, context);
       setRoiAnalysis(result);
-    } catch (err) {
-      setRoiAnalysis("No se pudo calcular el ROI. Por favor, intenta de nuevo ✨.");
+    } catch {
+      setRoiAnalysis("Could not calculate ROI. Please try again ✨.");
     } finally {
       setIsGeneratingROI(false);
     }
@@ -378,20 +378,20 @@ const App = () => {
     setIsGeneratingAudit(true);
     clearCareerOutputs();
 
-    const context = `Eres un Senior Tech Recruiter y Developer Advocate B2B, experto en atraer talento Top Tier en Inteligencia Artificial.`;
+    const context = `You are a Senior Tech Recruiter and B2B Developer Advocate, expert in attracting Top Tier Artificial Intelligence talent. Always respond in English.`;
 
-    const prompt = `Lee detalladamente la siguiente oferta de trabajo: "${jobDescription}".
-    Realiza una auditoría constructiva (un pequeño "roast" profesional) dirigida a la empresa que publicó la oferta.
-    Estructura tu respuesta:
-    1. Identifica 1 o 2 "Red Flags" o frases genéricas en la oferta que espantarían a talento Top de IA (como Andrés).
-    2. Sugiere 2 mejoras específicas en el texto o en el enfoque de la oferta para hacerla irresistible para Arquitectos de Soluciones de IA.
-    Usa un tono de consultor experto, directo pero respetuoso.`;
+    const prompt = `Read the following job offer in detail: "${jobDescription}".
+    Perform a constructive audit (a professional "roast") directed at the company that published the offer.
+    Structure your response:
+    1. Identify 1 or 2 "Red Flags" or generic phrases in the offer that would scare away Top AI talent (like Andrés).
+    2. Suggest 2 specific improvements to the text or approach of the offer to make it irresistible to AI Solutions Architects.
+    Use an expert consultant tone, direct but respectful.`;
 
     try {
       const result = await callGemini(prompt, context);
       setJobPostAudit(result);
-    } catch (err) {
-      setJobPostAudit("No se pudo auditar la oferta. Por favor, intenta de nuevo ✨.");
+    } catch {
+      setJobPostAudit("Could not audit the job offer. Please try again ✨.");
     } finally {
       setIsGeneratingAudit(false);
     }
@@ -401,25 +401,25 @@ const App = () => {
     if (!businessProblem.trim()) return;
     setIsGeneratingArch(true);
 
-    const context = `Eres Andrés Ciordia, un AI Solutions Architect experto en automatización e IA. 
-    Tu stack principal: n8n, Supabase, PostgreSQL, Python, IA Generativa (LLMs) y Vercel.`;
+    const context = `You are Andrés Ciordia, an AI Solutions Architect expert in automation and AI. 
+    Your main stack: n8n, Supabase, PostgreSQL, Python, Generative AI (LLMs), and Vercel. Always respond in English.`;
 
-    const prompt = `Un cliente potencial o CTO te plantea el siguiente problema de negocio: 
+    const prompt = `A potential client or CTO presents the following business problem to you: 
     "${businessProblem}"
     
-    Redacta una propuesta de arquitectura técnica de alto nivel (Blueprint) para resolver este problema.
-    Estructura tu respuesta en 3 partes breves:
-    1. El Enfoque (Breve resumen de la solución).
-    2. El Stack (Cómo encajan n8n, Supabase, IA, etc. en este caso específico).
-    3. El Impacto (Por qué este enfoque "Low-Code + IA" ahorra meses de desarrollo tradicional).
+    Draft a high-level technical architecture proposal (Blueprint) to solve this problem.
+    Structure your response into 3 brief parts:
+    1. The Approach (Brief summary of the solution).
+    2. The Stack (How n8n, Supabase, AI, etc. fit into this specific case).
+    3. The Impact (Why this "Low-Code + AI" approach saves months of traditional development).
     
-    Mantén un tono técnico pero orientado a negocio, demostrando autoridad y capacidad de ejecución rápida. No uses saludos, ve directo a la propuesta.`;
+    Maintain a technical yet business-oriented tone, demonstrating authority and quick execution capability. Do not use greetings, go straight to the proposal.`;
 
     try {
       const result = await callGemini(prompt, context);
       setArchitectureProposal(result);
-    } catch (err) {
-      setArchitectureProposal("No se pudo generar la arquitectura. Por favor, revisa la conexión y vuelve a intentarlo ✨.");
+    } catch {
+      setArchitectureProposal("Could not generate the architecture. Please check the connection and try again ✨.");
     } finally {
       setIsGeneratingArch(false);
     }
@@ -502,7 +502,7 @@ const App = () => {
           </div>
         </div>
         <p className="text-center text-[10px] text-slate-500 mt-3 font-light tracking-wide uppercase">
-          * Demostración en vivo simulada de mi arquitectura backend de automatización.
+          * Simulated live demonstration of my automation backend architecture.
         </p>
       </div>
 
@@ -538,7 +538,7 @@ const App = () => {
                 {project.shortDesc}
               </p>
               <div className="flex items-center text-blue-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
-                Ver Detalles <ChevronRight className="w-4 h-4 ml-1" />
+                View Details <ChevronRight className="w-4 h-4 ml-1" />
               </div>
             </div>
 
@@ -560,7 +560,7 @@ const App = () => {
                 <h3 className="text-xl font-bold text-white flex items-center">
                   Career Suite & Job Analytics <Sparkles className="w-4 h-4 ml-2 text-yellow-400" />
                 </h3>
-                <p className="text-sm text-slate-400 font-light">Pega una oferta de trabajo para desatar el poder analítico de la IA.</p>
+                <p className="text-sm text-slate-400 font-light">Paste a job offer to unleash the analytical power of AI.</p>
               </div>
             </div>
 
@@ -569,7 +569,7 @@ const App = () => {
               <div className="flex flex-col gap-4">
                 <textarea
                   className="w-full h-40 bg-black/30 border border-white/10 rounded-2xl p-4 text-sm text-slate-200 placeholder-slate-500 focus:ring-1 focus:ring-indigo-500 outline-none resize-none backdrop-blur-sm font-light leading-relaxed transition-all"
-                  placeholder="Pega aquí la descripción del puesto o vacante IT..."
+                  placeholder="Paste the job description or IT vacancy here..."
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
                 ></textarea>
@@ -582,7 +582,7 @@ const App = () => {
                     className="flex-auto flex flex-col sm:flex-row items-center justify-center gap-2 py-3 px-2 bg-indigo-600/80 hover:bg-indigo-500 border border-indigo-400/30 text-white font-bold text-[11px] sm:text-xs rounded-xl transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-md"
                   >
                     {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                    <span>Encaje</span>
+                    <span>Fit Analysis</span>
                   </button>
 
                   <button
@@ -600,7 +600,7 @@ const App = () => {
                     className="flex-auto flex flex-col sm:flex-row items-center justify-center gap-2 py-3 px-2 bg-pink-600/80 hover:bg-pink-500 border border-pink-400/30 text-white font-bold text-[11px] sm:text-xs rounded-xl transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-md"
                   >
                     {isGeneratingPrep ? <Loader2 className="w-4 h-4 animate-spin" /> : <Target className="w-4 h-4" />}
-                    <span>Entrevista</span>
+                    <span>Interview</span>
                   </button>
 
                   <button
@@ -618,7 +618,7 @@ const App = () => {
                     className="flex-auto flex flex-col sm:flex-row items-center justify-center gap-2 py-3 px-2 bg-orange-600/80 hover:bg-orange-500 border border-orange-400/30 text-white font-bold text-[11px] sm:text-xs rounded-xl transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-md"
                   >
                     {isGeneratingAudit ? <Loader2 className="w-4 h-4 animate-spin" /> : <ClipboardCheck className="w-4 h-4" />}
-                    <span>Auditar Oferta</span>
+                    <span>Audit Offer</span>
                   </button>
                 </div>
               </div>
@@ -628,7 +628,7 @@ const App = () => {
                 {!fitAnalysis && !coverLetter && !interviewPrep && !roiAnalysis && !jobPostAudit && (
                   <div className="m-auto text-center opacity-50 z-10 flex flex-col items-center">
                     <Bot className="w-12 h-12 mb-3 text-slate-400" />
-                    <p className="text-sm font-light text-slate-300">Pega la oferta y selecciona qué herramienta de inteligencia utilizar.</p>
+                    <p className="text-sm font-light text-slate-300">Paste the offer and select which intelligence tool to use.</p>
                   </div>
                 )}
 
@@ -636,7 +636,7 @@ const App = () => {
                   {fitAnalysis && (
                     <div className="animate-in fade-in slide-in-from-right-4">
                       <h4 className="text-sm font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center">
-                        <Activity className="w-4 h-4 mr-2" /> Análisis de Fit Técnico
+                        <Activity className="w-4 h-4 mr-2" /> Technical Fit Analysis
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-light">
                         {fitAnalysis}
@@ -647,7 +647,7 @@ const App = () => {
                   {coverLetter && (
                     <div className="animate-in fade-in slide-in-from-right-4">
                       <h4 className="text-sm font-bold text-purple-400 uppercase tracking-widest mb-3 flex items-center">
-                        <Mail className="w-4 h-4 mr-2" /> Cover Letter Propuesta
+                        <Mail className="w-4 h-4 mr-2" /> Proposed Cover Letter
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-light bg-black/30 p-4 rounded-xl border border-white/5">
                         {coverLetter}
@@ -658,7 +658,7 @@ const App = () => {
                   {interviewPrep && (
                     <div className="animate-in fade-in slide-in-from-right-4">
                       <h4 className="text-sm font-bold text-pink-400 uppercase tracking-widest mb-3 flex items-center">
-                        <Target className="w-4 h-4 mr-2" /> Simulador de Preguntas (STAR Method)
+                        <Target className="w-4 h-4 mr-2" /> Interview Simulator (STAR Method)
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-light">
                         {interviewPrep}
@@ -680,7 +680,7 @@ const App = () => {
                   {jobPostAudit && (
                     <div className="animate-in fade-in slide-in-from-right-4">
                       <h4 className="text-sm font-bold text-orange-400 uppercase tracking-widest mb-3 flex items-center">
-                        <ClipboardCheck className="w-4 h-4 mr-2" /> Auditoría de la Oferta (Roast)
+                        <ClipboardCheck className="w-4 h-4 mr-2" /> Job Offer Audit (Roast)
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-light">
                         {jobPostAudit}
@@ -709,7 +709,7 @@ const App = () => {
                 <h3 className="text-xl font-bold text-white flex items-center">
                   AI Architecture Blueprint <Sparkles className="w-4 h-4 ml-2 text-yellow-400" />
                 </h3>
-                <p className="text-sm text-slate-400 font-light">¿Tienes un reto en tu empresa? Cuéntame el problema y mi IA diseñará una arquitectura técnica para resolverlo.</p>
+                <p className="text-sm text-slate-400 font-light">Facing a business challenge? Tell me the problem and my AI will design a technical architecture to solve it.</p>
               </div>
             </div>
 
@@ -718,7 +718,7 @@ const App = () => {
               <div className="flex flex-col gap-4">
                 <textarea
                   className="w-full h-40 bg-black/30 border border-white/10 rounded-2xl p-4 text-sm text-slate-200 placeholder-slate-500 focus:ring-1 focus:ring-emerald-500 outline-none resize-none backdrop-blur-sm font-light leading-relaxed transition-all"
-                  placeholder="Ej: Dedicamos 20 horas a la semana extrayendo datos a mano de facturas en PDF y subiéndolas a nuestro ERP..."
+                  placeholder="Ex: We spend 20 hours a week manually extracting data from PDF invoices and uploading them to our ERP..."
                   value={businessProblem}
                   onChange={(e) => setBusinessProblem(e.target.value)}
                 ></textarea>
@@ -729,9 +729,9 @@ const App = () => {
                   className="flex items-center justify-center gap-2 w-full py-3.5 bg-emerald-600/80 hover:bg-emerald-500 border border-emerald-400/30 text-white font-bold text-sm rounded-2xl transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-md"
                 >
                   {isGeneratingArch ? (
-                    <><Loader2 className="w-5 h-5 animate-spin" /> Diseñando Solución...</>
+                    <><Loader2 className="w-5 h-5 animate-spin" /> Designing Solution...</>
                   ) : (
-                    <><Cpu className="w-5 h-5" /> Diseñar Arquitectura ✨</>
+                    <><Cpu className="w-5 h-5" /> Design Architecture ✨</>
                   )}
                 </button>
               </div>
@@ -741,13 +741,13 @@ const App = () => {
                 {!architectureProposal ? (
                   <div className="m-auto text-center opacity-50 z-10 flex flex-col items-center">
                     <Layers className="w-12 h-12 mb-3 text-emerald-400/60" />
-                    <p className="text-sm font-light text-slate-300">Describe un problema para ver cómo mi stack técnico lo solucionaría en tiempo récord.</p>
+                    <p className="text-sm font-light text-slate-300">Describe a problem to see how my tech stack would solve it in record time.</p>
                   </div>
                 ) : (
                   <div className="z-10 relative h-full overflow-y-auto pr-2 custom-scrollbar">
                     <div className="animate-in fade-in slide-in-from-right-4">
                       <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-widest mb-3 flex items-center">
-                        <Server className="w-4 h-4 mr-2" /> Propuesta Técnica
+                        <Server className="w-4 h-4 mr-2" /> Technical Proposal
                       </h4>
                       <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap font-light">
                         {architectureProposal}
@@ -800,7 +800,7 @@ const App = () => {
                           disabled={isAiLoading}
                           className="w-full py-2 bg-blue-600/80 backdrop-blur-md text-white border border-blue-400/30 text-xs font-bold rounded-full hover:bg-blue-500 transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)] disabled:opacity-50 mt-auto"
                         >
-                          {isAiLoading ? "Analizando..." : "Ver Escalabilidad"}
+                          {isAiLoading ? "Analyzing..." : "View Scalability"}
                         </button>
                       ) : (
                         <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap animate-in fade-in font-light flex-1 overflow-y-auto pr-1 custom-scrollbar">
@@ -813,7 +813,7 @@ const App = () => {
                     <section className="p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-3xl relative overflow-hidden backdrop-blur-sm shadow-inner flex flex-col max-h-64">
                       <div className="flex justify-between items-center mb-5 shrink-0">
                         <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-widest flex items-center">
-                          <Users className="w-4 h-4 mr-2" /> Para HR ✨
+                          <Users className="w-4 h-4 mr-2" /> For HR ✨
                         </h4>
                       </div>
                       {!hrExplanation ? (
@@ -822,7 +822,7 @@ const App = () => {
                           disabled={isHrLoading}
                           className="w-full py-2 bg-emerald-600/80 backdrop-blur-md text-white border border-emerald-400/30 text-xs font-bold rounded-full hover:bg-emerald-500 transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)] disabled:opacity-50 mt-auto"
                         >
-                          {isHrLoading ? "Traduciendo..." : "Explicar a Reclutador"}
+                          {isHrLoading ? "Translating..." : "Explain to Recruiter"}
                         </button>
                       ) : (
                         <div className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap animate-in fade-in font-light flex-1 overflow-y-auto pr-1 custom-scrollbar">
@@ -835,16 +835,16 @@ const App = () => {
                   {/* GEMINI FEATURE: Client Industry Adaptor ✨ */}
                   <section className="p-6 bg-amber-500/5 border border-amber-500/20 rounded-3xl relative overflow-hidden backdrop-blur-sm shadow-inner">
                     <h4 className="text-sm font-bold text-amber-400 uppercase tracking-widest flex items-center mb-4">
-                      <BriefcaseBusiness className="w-4 h-4 mr-2" /> Vende este proyecto a tu sector ✨
+                      <BriefcaseBusiness className="w-4 h-4 mr-2" /> Pitch to your Industry ✨
                     </h4>
-                    <p className="text-xs text-slate-400 mb-4 font-light">¿Cómo se aplicaría esta tecnología en una industria diferente?</p>
+                    <p className="text-xs text-slate-400 mb-4 font-light">How would this technology apply in a different industry?</p>
 
                     <div className="flex flex-col sm:flex-row gap-3">
                       <input
                         type="text"
                         value={visitorIndustry}
                         onChange={(e) => setVisitorIndustry(e.target.value)}
-                        placeholder="Tu sector (ej. Inmobiliaria, E-commerce, Legal...)"
+                        placeholder="Your industry (e.g. Real Estate, E-commerce, Legal...)"
                         className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:ring-1 focus:ring-amber-500 outline-none font-light transition-all"
                       />
                       <button
@@ -852,7 +852,7 @@ const App = () => {
                         disabled={isAdapting || !visitorIndustry.trim()}
                         className="px-6 py-2.5 bg-amber-600/80 backdrop-blur-md text-white border border-amber-400/30 text-xs font-bold rounded-xl hover:bg-amber-500 transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] disabled:opacity-50 whitespace-nowrap"
                       >
-                        {isAdapting ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : "Generar Caso de Uso"}
+                        {isAdapting ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : "Generate Use Case"}
                       </button>
                     </div>
 
@@ -897,7 +897,7 @@ const App = () => {
                 <div className="p-2 bg-white/10 rounded-xl shadow-inner"><Bot className="w-5 h-5 text-blue-200" /></div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest opacity-70">Andrés AI Assistant</p>
-                  <p className="text-sm font-semibold text-slate-100">Pregúntame sobre Andrés ✨</p>
+                  <p className="text-sm font-semibold text-slate-100">Ask me about Andrés ✨</p>
                 </div>
               </div>
               <button onClick={() => setIsChatOpen(false)} className="hover:bg-white/10 p-1.5 rounded-full transition-colors"><X className="w-5 h-5" /></button>
@@ -918,7 +918,7 @@ const App = () => {
                 <div className="flex justify-start">
                   <div className="bg-white/5 p-3.5 rounded-2xl rounded-tl-none border border-white/10 flex items-center gap-2 backdrop-blur-sm">
                     <Loader2 className="w-4 h-4 animate-spin text-blue-400" />
-                    <span className="text-xs text-slate-400 font-medium tracking-wide">Gemini está pensando... ✨</span>
+                    <span className="text-xs text-slate-400 font-medium tracking-wide">Gemini is thinking... ✨</span>
                   </div>
                 </div>
               )}
@@ -931,7 +931,7 @@ const App = () => {
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="¿Por qué contratar a Andrés?..."
+                placeholder="Why hire Andrés?..."
                 className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:ring-1 focus:ring-blue-500 outline-none transition-shadow font-light"
               />
               <button
@@ -955,7 +955,7 @@ const App = () => {
           {isChatOpen ? <X className="w-6 h-6" /> : (
             <>
               <Sparkles className="w-6 h-6 text-blue-100" />
-              <span className="font-bold text-sm pr-2 tracking-wide">Chat con Portfolio ✨</span>
+              <span className="font-bold text-sm pr-2 tracking-wide">Chat with Portfolio ✨</span>
             </>
           )}
         </button>
